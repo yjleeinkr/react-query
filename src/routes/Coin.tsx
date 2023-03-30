@@ -12,6 +12,7 @@ import Chart from "./Chart";
 import Price from "./Price";
 import { useQuery } from "react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -171,6 +172,14 @@ function Coin() {
     const loading = infoLoading || tickersLoading; 
     return (
       <Container>
+
+        <Helmet>
+          {/* html의 head에 들어가는 모든 내용들을 넣을 수 있다. title 뿐만 아니라, favicon, css 등등 */}
+          {/* Helmet == html의 head로 가는 direct link */}
+          <title>
+            {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+          </title>
+        </Helmet>
         <Header>
           <Title>
             {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
@@ -215,7 +224,7 @@ function Coin() {
             </Tabs>
             <Switch>
               <Route path={`/:coinId/chart`}>
-                <Chart coinId={coinId}/>
+                <Chart coinId={coinId} />
               </Route>
               <Route path={`/:coinId/price`}>
                 <Price />
