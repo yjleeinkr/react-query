@@ -11,10 +11,11 @@ interface HistoricalData {
     volume : string;
     market_cap: number;
 }
-interface ChartProps { 
-    coinId: string;
+interface ChartProps {
+  coinId: string;
+  isDark: boolean
 }
-function Chart({ coinId }: ChartProps) {
+function Chart({ coinId, isDark}: ChartProps) {
     const { isLoading, data } = useQuery<HistoricalData[]>( ["ohlcv", coinId],() => fetchCoinHistory(coinId), { refetchInterval: 10000 });
     
     return (
@@ -38,7 +39,7 @@ function Chart({ coinId }: ChartProps) {
                 background: "transparent"
                 },
               grid: { show: false },
-              theme: { mode: "dark" },
+              theme: { mode: isDark ? "dark": "light" },
               stroke: { curve: "smooth", width: 3},
               yaxis: { show: false },
               xaxis: {

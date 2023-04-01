@@ -44,6 +44,7 @@ const Overview = styled.div`
   padding: 10px 20px;
   border-radius: 10px;
 `;
+
 const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
@@ -77,6 +78,13 @@ const Tab = styled.span<{isActive: boolean}>`
   }
 `;
 
+const BackButton = styled.span`
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  display:flex;
+  justify-content: flex-start;
+`
 interface RouteParams {
     coinId: string;
 }
@@ -142,7 +150,11 @@ interface PriceData {
   };
 }
 
-function Coin() {
+interface CoinProps {
+  isDark: boolean;
+}
+
+function Coin({isDark}: CoinProps) {
     const { coinId } = useParams<RouteParams>();
     // 타입스크립트에게 우리 url 내에 몇몇 파라미터들이 있다는 걸 말해줘야한다.
     const { state } = useLocation<RouteState>();
@@ -172,7 +184,6 @@ function Coin() {
     const loading = infoLoading || tickersLoading; 
     return (
       <Container>
-
         <Helmet>
           {/* html의 head에 들어가는 모든 내용들을 넣을 수 있다. title 뿐만 아니라, favicon, css 등등 */}
           {/* Helmet == html의 head로 가는 direct link */}
@@ -181,6 +192,9 @@ function Coin() {
           </title>
         </Helmet>
         <Header>
+          <BackButton>
+            <Link to="/">🔙</Link>
+          </BackButton>
           <Title>
             {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
           </Title>
@@ -224,10 +238,10 @@ function Coin() {
             </Tabs>
             <Switch>
               <Route path={`/:coinId/chart`}>
-                <Chart coinId={coinId} />
+                  <Chart coinId={coinId} isDark={isDark}/>
               </Route>
               <Route path={`/:coinId/price`}>
-                <Price />
+                <Price coinId={coinId} />
               </Route>
             </Switch>
           </>
