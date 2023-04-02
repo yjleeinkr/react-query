@@ -150,11 +150,7 @@ interface PriceData {
   };
 }
 
-interface CoinProps {
-  isDark: boolean;
-}
-
-function Coin({isDark}: CoinProps) {
+function Coin() {
     const { coinId } = useParams<RouteParams>();
     // 타입스크립트에게 우리 url 내에 몇몇 파라미터들이 있다는 걸 말해줘야한다.
     const { state } = useLocation<RouteState>();
@@ -238,7 +234,7 @@ function Coin({isDark}: CoinProps) {
             </Tabs>
             <Switch>
               <Route path={`/:coinId/chart`}>
-                  <Chart coinId={coinId} isDark={isDark}/>
+                  <Chart coinId={coinId} />
               </Route>
               <Route path={`/:coinId/price`}>
                 <Price coinId={coinId} />

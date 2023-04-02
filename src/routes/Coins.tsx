@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -62,24 +64,11 @@ interface CoinData {
   type: string;
 }
 
-interface CoinsProps {
-  toggleDark : () => void
-}
-
-function Coins({toggleDark}: CoinsProps) {
-    const { isLoading, data } = useQuery<CoinData[]>("allCoins", fetchCoins);
-    // const [coins, setCoins] = useState<CoinData[]>([]);
-    // const [loading, setLoading] = useState(true);
-
-    // useEffect(() => {
-    //     (async () => {
-    //         const response = await fetch("https://api.coinpaprika.com/v1/coins");
-    //         const json = await response.json();
-    //         setCoins(json.slice(0, 100))
-    //         setLoading(false)
-    //     })()
-    // }, [])
-    
+function Coins() {
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom(prev => !prev)
+  const { isLoading, data } = useQuery<CoinData[]>("allCoins", fetchCoins);
+  
     return (
       <Container>
         <Helmet>
@@ -87,7 +76,9 @@ function Coins({toggleDark}: CoinsProps) {
         </Helmet>
         <Header>
           <Title>코인</Title>
-          <button onClick={toggleDark}>Toggle Mode</button>
+          <button onClick={toggleDarkAtom}>
+            Toggle Mode
+          </button>
         </Header>
         {isLoading ? (
           <Loader>"Loading..."</Loader>

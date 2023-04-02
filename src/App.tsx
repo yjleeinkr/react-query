@@ -4,6 +4,8 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atoms";
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -69,12 +71,11 @@ a{
 `;
 
 function App() {
-  const [isDark, setIsDark] = useState(false)
-  const toggleDark = () => setIsDark(current => !current)
+  const isDark = useRecoilValue(isDarkAtom)
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <GlobalStyle />
-      <Router isDark={isDark} toggleDark={toggleDark}/>
+      <Router />
       <ReactQueryDevtools initialIsOpen={true} />
     </ThemeProvider>
   );
